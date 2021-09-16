@@ -1,0 +1,19 @@
+const String INTRO_PAGE_API = 'customer/page/intro/';
+const String HOME_PAGE_API = 'customer/page/home/';
+const String SEARCH_PAGE_API = 'customer/page/search/';
+const String PRODUCT_DETAIL_PAGE_API = 'customer/page/product/';
+const String PRODUCT_API = 'customer/domain/product/';
+const String PRODUCT_TOTAL_API = 'customer/domain/product/total';
+const String PRODUCT_FAVOURITE_API = 'customer/domain/product/favourite';
+const String SEARCH_API = 'customer/domain/search';
+const String CART_API = 'customer/domain/cart';
+const String CART_UPDATE_API = 'customer/domain/cart/update';
+const String PAYMENT_CHANNEL_API = 'customer/domain/payment/channel';
+const String PLACES_INDEX_API = 'customer/domain/places';
+const String PLACES_STORE_API = 'customer/domain/places/store';
+
+const String CUSTOMER_EXIST_API = 'customer/auth/exist/';
+const String CUSTOMER_AUTHENTICATE_API = 'customer/auth/authenticate/';
+const String CUSTOMER_UPDATE_API = 'customer/auth/update/';
+const String CUSTOMER_FETCH_ONE_API = 'customer/auth/user/';
+const String CUSTOMER_SIGNOUT_API = 'customer/auth/revoke/';
