@@ -14,23 +14,41 @@ class ShimmerLoader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width ?? double.infinity,
-      height: height ?? double.infinity,
-      child: Shimmer.fromColors(
-        period: Duration(
-          milliseconds: 700,
-        ),
-        baseColor: Colors.grey[200],
-        highlightColor: Colors.white,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(radius ?? 10),
-          ),
-        ),
-      ),
-    );
+    // return _loader(radius, width, height);
+
+    return _shimmer(radius, width, height);
   }
 }
+
+Widget _shimmer(double radius, double width, double height) {
+  return SizedBox(
+    width: width,
+    height: height,
+    child: Shimmer.fromColors(
+      period: Duration(
+        milliseconds: 700,
+      ),
+      baseColor: Colors.grey[200],
+      highlightColor: Colors.white,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(radius ?? 10),
+        ),
+      ),
+    ),
+  );
+}
+
+// Widget _loader(double radius, double width, double height) {
+//   return Container(
+//     width: width,
+//     height: height,
+//     decoration: BoxDecoration(
+//       color: Colors.grey[200],
+//       shape: BoxShape.rectangle,
+//       borderRadius: BorderRadius.circular(radius ?? 10),
+//     ),
+//   );
+// }

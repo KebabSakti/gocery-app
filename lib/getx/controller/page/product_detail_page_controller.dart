@@ -2,6 +2,7 @@ import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/getx/getx.dart';
 import 'package:ayov2/model/model.dart';
+import 'package:ayov2/util/enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
@@ -11,25 +12,27 @@ class ProductDetailPageControlller extends GetxController {
 
   final TextEditingController qtyField = TextEditingController();
 
-  final RxBool loading = false.obs;
-  final RxBool loadingFavourite = false.obs;
-  final Rx<ProductModel> product = ProductModel().obs;
+  final Rx<StateModel<ProductDetailPageModel>> productDetail =
+      StateModel<ProductDetailPageModel>(
+    state: States.loading,
+    data: ProductDetailPageModel(),
+  ).obs;
 
   final CartController cartController = Get.find();
 
   ProductModel productModel = Get.arguments;
-  ProductDetailPageModel pageModel = ProductDetailPageModel();
 
   void loadPageData() async {
-    loading(true);
+    try {
+      productDetail(StateModel(state: States.loading));
 
-    await _appPage.product(productId: productModel.productId).then((model) {
-      pageModel = model;
-
-      product(model.product);
-
-      loading(false);
-    });
+      await _appPage.product(productId: productModel.productId).then((model) {
+        productDetail(StateModel<ProductDetailPageModel>(
+            state: States.complete, data: model));
+      }).catchError((e, k) => throw Failure(DIOERROR_MESSAGE));
+    } on Failure catch (_) {
+      _routeToErrorPage();
+    }
   }
 
   void _initialProductQty() {
@@ -43,12 +46,12 @@ class ProductDetailPageControlller extends GetxController {
   }
 
   void addProductFavourite(String productId) async {
-    loadingFavourite(true);
+    productDetail(productDetail().copyWith(state: States.other1));
 
     await _productCore.favourite(productId: productId).then((model) {
-      product(model);
-
-      loadingFavourite(false);
+      productDetail(StateModel<ProductDetailPageModel>(
+          state: States.complete,
+          data: productDetail().data.copyWith(product: model)));
     });
   }
 
@@ -72,6 +75,12 @@ class ProductDetailPageControlller extends GetxController {
 
   void routeToCartPage() async {
     await Get.toNamed(CART_PAGE);
+    _initialProductQty();
+  }
+
+  void _routeToErrorPage() async {
+    await Get.toNamed(ERROR_PAGE);
+    loadPageData();
     _initialProductQty();
   }
 

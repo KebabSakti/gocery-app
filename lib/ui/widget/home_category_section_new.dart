@@ -28,18 +28,10 @@ class HomeCategorySectionNew extends StatelessWidget {
                 8,
                 (index) => Column(
                   children: [
-                    InkWell(
-                      onTap: () {},
-                      borderRadius: BorderRadius.circular(25),
-                      child: Ink(
-                        width: (Get.size.width - 50) / 4,
-                        height: (Get.size.width - 50) / 4,
-                        decoration: BoxDecoration(
-                          color: Get.theme.colorScheme.secondaryVariant,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: ShimmerLoader(radius: 25),
-                      ),
+                    ShimmerLoader(
+                      width: (Get.size.width - 50) / 4,
+                      height: (Get.size.width - 50) / 4,
+                      radius: 25,
                     ),
                     SizedBox(height: 6),
                     ShimmerLoader(

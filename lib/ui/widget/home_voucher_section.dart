@@ -2,7 +2,6 @@ import 'package:ayov2/getx/getx.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/ui/ui.dart';
 import 'package:ayov2/util/enums.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,9 +26,9 @@ class HomeVoucherSection extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   var images = [
-                    'https://image.freepik.com/free-vector/discount-social-media-banner-sale-liquid-background_92715-50.jpg',
-                    'https://image.freepik.com/free-vector/abstract-colorful-big-sale-banner_23-2148345098.jpg',
-                    'https://image.freepik.com/free-vector/end-season-summer-sale-horizontal-banner_23-2148633748.jpg',
+                    'https://image.freepik.com/free-vector/gradient-sale-background_23-2148948683.jpg?size=500&ext=webp',
+                    'https://image.freepik.com/free-vector/gradient-10-10-background_23-2149058126.jpg?size=500&ext=webp',
+                    'https://image.freepik.com/free-vector/gradient-flash-sale-background_23-2149027975.jpg?size=500&ext=webp',
                   ];
 
                   return Padding(
@@ -47,26 +46,7 @@ class HomeVoucherSection extends StatelessWidget {
                       }
 
                       if (images.length > 0) {
-                        return Material(
-                          borderRadius: BorderRadius.circular(15),
-                          child: InkWell(
-                            onTap: () {},
-                            borderRadius: BorderRadius.circular(15),
-                            child: Ink(
-                              width: Get.size.width - 60,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: CachedNetworkImage(
-                                  imageUrl: images[index],
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) => ShimmerLoader(
-                                    radius: 15,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
+                        return HomeVoucherItem(url: images[index]);
                       }
 
                       return SizedBox.shrink();

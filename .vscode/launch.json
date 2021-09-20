@@ -11,7 +11,7 @@
             "flutterMode": "debug"
         },
         {
-            "name": "ayov2 (profile mode)",
+            "name": "ayov2 (profile)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"

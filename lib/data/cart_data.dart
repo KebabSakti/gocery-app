@@ -2,7 +2,22 @@ import 'dart:convert';
 
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/repo/repo.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+List<CartItemModel> _parsedCartItem(dynamic data) {
+  var parsedData = jsonDecode(data);
+
+  if (!parsedData['success']) throw Exception(parsedData['message']);
+
+  List<CartItemModel> cartItems = List<CartItemModel>.from(
+    parsedData['data'].map(
+      (item) => CartItemModel.fromJson(item),
+    ),
+  );
+
+  return cartItems;
+}
 
 class CartData {
   final CartRepo _cartRepo = CartRepo();
@@ -10,17 +25,7 @@ class CartData {
   Future<List<CartItemModel>> cart() async {
     var response = await _cartRepo.cart();
 
-    var parsedData = await jsonDecode(response.data);
-
-    if (!parsedData['success']) throw Exception(parsedData['message']);
-
-    List<CartItemModel> cartItems = List<CartItemModel>.from(
-      await parsedData['data'].map(
-        (item) => CartItemModel.fromJson(item),
-      ),
-    );
-
-    return cartItems;
+    return compute(_parsedCartItem, response.data);
   }
 
   Future<List<CartItemModel>> cartUpdate({
@@ -28,16 +33,6 @@ class CartData {
   }) async {
     var response = await _cartRepo.cartUpdate(cartItems: cartItems);
 
-    var parsedData = await jsonDecode(response.data);
-
-    if (!parsedData['success']) throw Exception(parsedData['message']);
-
-    List<CartItemModel> carts = List<CartItemModel>.from(
-      await parsedData['data'].map(
-        (item) => CartItemModel.fromJson(item),
-      ),
-    );
-
-    return carts;
+    return compute(_parsedCartItem, response.data);
   }
 }

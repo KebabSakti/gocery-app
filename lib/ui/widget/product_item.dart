@@ -16,20 +16,26 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.grey[50],
+      color: Get.theme.colorScheme.background,
       borderRadius: BorderRadius.circular(15),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(15),
         child: Ink(
           width: (Get.size.width - 70) / 2,
-          child: ClipRRect(
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    CachedNetworkImage(
+          ),
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    ),
+                    child: CachedNetworkImage(
                       imageUrl: product.productCover,
                       fit: BoxFit.cover,
                       width: double.infinity,
@@ -41,106 +47,106 @@ class ProductItem extends StatelessWidget {
                       placeholder: (context, url) =>
                           ShimmerLoader(height: 260 / 2),
                     ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 5, top: 5),
-                        child: ClipRRect(
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5, top: 5),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black38,
                           borderRadius: BorderRadius.circular(6),
-                          child: Container(
-                            color: Colors.black38,
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 6,
-                              vertical: 4,
-                            ),
-                            child: Text(
-                              '${product.productUnitValue} ${product.productUnit}',
-                              style: TextStyle(
-                                color: Get.theme.colorScheme.secondary,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 10,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                        child: Text(
+                          '${product.productUnitValue} ${product.productUnit}',
+                          style: TextStyle(
+                            color: Get.theme.colorScheme.secondary,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10,
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        Text(
-                          product.productName,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text(
+                        product.productName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 12,
                         ),
-                        Spacer(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              product.productPoint.toString().length > 3
-                                  ? product.productPoint.toString() + '+'
-                                  : product.productPoint.toString(),
-                              textAlign: TextAlign.center,
+                      ),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            product.productPoint.toString().length > 3
+                                ? product.productPoint.toString() + '+'
+                                : product.productPoint.toString(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Get.theme.colorScheme.primaryVariant,
+                            ),
+                          ),
+                          SizedBox(width: 2),
+                          SvgPicture.asset(
+                            COIN_ICON,
+                            width: 10,
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                      (double.parse(product.productDiscount) == 0)
+                          ? SizedBox.shrink()
+                          : Text(
+                              Utility().currency(product.productPrice),
                               style: TextStyle(
-                                fontSize: 12,
+                                fontSize: 10,
                                 fontWeight: FontWeight.w600,
-                                color: Get.theme.colorScheme.primaryVariant,
+                                color: Get.theme.colorScheme.onSecondary,
+                                decoration: TextDecoration.lineThrough,
                               ),
                             ),
-                            SizedBox(width: 2),
-                            SvgPicture.asset(
-                              COIN_ICON,
-                              width: 10,
-                              height: 10,
-                            ),
-                          ],
+                      Text(
+                        Utility().currency(product.productFinalPrice),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Get.theme.primaryColor,
                         ),
-                        (double.parse(product.productDiscount) == 0)
-                            ? SizedBox.shrink()
-                            : Text(
-                                Utility().currency(product.productPrice),
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w600,
-                                  color: Get.theme.colorScheme.onSecondary,
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                              ),
-                        Text(
-                          Utility().currency(product.productFinalPrice),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Get.theme.primaryColor,
-                          ),
-                        ),
-                        Spacer(),
-                        Rating(double.parse(product.productRatingValue)),
-                        SizedBox(height: 10),
-                        ProductDeliveryType(
-                          name: 'PENGIRIMAN ${product.productDeliveryType}',
-                          color: (product.productDeliveryType == 'LANGSUNG')
-                              ? Get.theme.primaryColor
-                              : Get.theme.colorScheme.primaryVariant,
-                        ),
-                      ],
-                    ),
+                      ),
+                      Spacer(),
+                      Rating(double.parse(product.productRatingValue)),
+                      SizedBox(height: 10),
+                      ProductDeliveryType(
+                        name: 'PENGIRIMAN ${product.productDeliveryType}',
+                        color: (product.productDeliveryType == 'LANGSUNG')
+                            ? Get.theme.primaryColor
+                            : Get.theme.colorScheme.primaryVariant,
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,7 +1,6 @@
-import 'package:ayov2/const/const.dart';
 import 'package:ayov2/getx/getx.dart';
+import 'package:ayov2/ui/widget/widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ScrollTopButton extends StatelessWidget {
@@ -25,15 +24,7 @@ class ScrollTopButton extends StatelessWidget {
           begin: 0.0,
           end: controller.endTween.value,
         ),
-        child: GestureDetector(
-          child: Opacity(
-            opacity: 0.8,
-            child: SvgPicture.asset(
-              ARROW_UP_ICON,
-              width: 45,
-              height: 45,
-            ),
-          ),
+        child: ScrollTopButtonChild(
           onTap: controller.scrollToTop,
         ),
         builder: (context, scale, child) => Transform.scale(

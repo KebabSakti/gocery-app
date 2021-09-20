@@ -28,6 +28,14 @@ class IntroPageController extends GetxController {
         _authenticate(_authFirebase.instance().currentUser);
       }
     }
+
+    // _authFirebase.instance().authStateChanges().listen((User user) {
+    //   if (user == null) {
+    //     _helper.toast.show('Belum login dia ini');
+    //   } else {
+    //     _routeToAppPage();
+    //   }
+    // });
   }
 
   void _authenticate(User user) async {

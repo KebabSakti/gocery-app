@@ -1,10 +1,8 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/getx/getx.dart';
-import 'package:ayov2/model/banner/banner_primary_model.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/ui/ui.dart';
 import 'package:ayov2/util/enums.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +19,7 @@ class HomeAppbarSection extends StatelessWidget {
       titleSpacing: 0,
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 4),
           child: Obx(() {
             return IconButtonWithDot(
               Icon(Icons.local_mall_rounded),
@@ -76,55 +74,21 @@ class HomeAppbarSection extends StatelessWidget {
           if (home.data.bannerPrimaryModel.length > 0) {
             List<BannerPrimaryModel> banners = home.data.bannerPrimaryModel;
 
-            return Container(
-              child: ImageSlider(
-                items: List<Widget>.from(
-                  banners.map(
-                    (item) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (item.bannerPrimaryLink != null)
-                            controller.sliderOnClick(item.bannerPrimaryLink);
-                        },
-                        child: CachedNetworkImage(
-                          imageUrl: item.bannerPrimaryImage,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                          placeholder: (context, url) {
-                            return ShimmerLoader();
-                          },
-                        ),
-                      );
-                    },
-                  ),
+            return ImageSlider(
+              items: List<Widget>.from(
+                banners.map(
+                  (item) {
+                    return SliderItem(
+                      onTap: () {
+                        if (item.bannerPrimaryLink != null)
+                          controller.sliderOnClick(item.bannerPrimaryLink);
+                      },
+                      item: item,
+                    );
+                  },
                 ),
               ),
             );
-
-            // return Container(
-            //   child: ImageSlider(
-            //     itemCount: banners.length,
-            //     itemBuilder: (_, int index) {
-            //       return GestureDetector(
-            //         onTap: () {
-            //           if (banners[index].bannerPrimaryLink != null)
-            //             controller
-            //                 .sliderOnClick(banners[index].bannerPrimaryLink);
-            //         },
-            //         child: CachedNetworkImage(
-            //           imageUrl: banners[index].bannerPrimaryImage,
-            //           fit: BoxFit.cover,
-            //           width: double.infinity,
-            //           height: double.infinity,
-            //           placeholder: (context, url) {
-            //             return ShimmerLoader();
-            //           },
-            //         ),
-            //       );
-            //     },
-            //   ),
-            // );
           }
 
           return SizedBox.shrink();

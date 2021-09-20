@@ -22,22 +22,17 @@ class ProductPage extends GetWidget<ProductPageController> {
       appBar: AppBar(
         titleSpacing: 0,
         actions: [
-          IconButton(
-            onPressed: () {},
-            iconSize: 30,
-            padding: EdgeInsets.only(left: 8),
-            visualDensity: VisualDensity.compact,
-            icon: IconWithDot(
-              Icon(Icons.shopping_bag_rounded),
-            ),
-          ),
-          IconButton(
-            onPressed: () {},
-            iconSize: 30,
-            padding: EdgeInsets.only(right: 8, left: 0),
-            icon: IconWithDot(
-              Icon(Icons.account_circle_rounded),
-            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Obx(() {
+              return IconButtonWithDot(
+                Icon(Icons.local_mall_rounded),
+                value: controller.cartController.cartQtyTotal.value,
+                onPressed: () {
+                  controller.routeToCartPage();
+                },
+              );
+            }),
           ),
         ],
         title: StaticSearchField(
@@ -79,7 +74,7 @@ class ProductPage extends GetWidget<ProductPageController> {
                           if (controller.pageState().state == States.loading) {
                             return GridView.builder(
                               shrinkWrap: true,
-                              itemCount: 4,
+                              itemCount: 6,
                               physics: NeverScrollableScrollPhysics(),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -98,7 +93,12 @@ class ProductPage extends GetWidget<ProductPageController> {
                             return Container(
                               height: Get.size.height - 150,
                               padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: EmptyData(),
+                              child: PageState(
+                                iconData: Icons.inventory,
+                                title: 'Produk Tidak Ditemukan',
+                                text:
+                                    'Gunakan filter produk untuk pencarian lebih detail',
+                              ),
                             );
                           }
 
@@ -106,8 +106,13 @@ class ProductPage extends GetWidget<ProductPageController> {
                             return Container(
                               height: Get.size.height - 150,
                               padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: PageError(
-                                onPressed: controller.loadFilteredProduct,
+                              child: PageState(
+                                iconData: Icons.sync_problem_rounded,
+                                title: 'Terjadi Kesalahan',
+                                text:
+                                    'Jangan panik, sentuh tombol di bawah untuk mencoba kembali',
+                                buttonText: 'Coba Lagi',
+                                onTap: controller.loadFilteredProduct,
                               ),
                             );
                           }

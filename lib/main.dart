@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       initialBinding: GlobalBinding(),
       defaultTransition: Transition.rightToLeft,
-      transitionDuration: Duration(milliseconds: 200),
+      transitionDuration: Duration(milliseconds: 100),
       showPerformanceOverlay: false,
       getPages: AppRoute.routes,
     );

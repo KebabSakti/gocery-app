@@ -98,7 +98,9 @@ class HomePageController extends GetxController {
                 (model.products.length == 0) ? States.empty : States.complete,
           ),
         );
-      }).catchError((e, k) => throw Failure(DIOERROR_MESSAGE));
+      }).catchError((e, k) {
+        throw Failure(DIOERROR_MESSAGE);
+      });
     } on Failure catch (_) {
       product(StateModel(state: States.error));
     }
@@ -127,7 +129,9 @@ class HomePageController extends GetxController {
               state: States.complete,
             ),
           );
-        }).catchError((e, k) => throw Failure(DIOERROR_MESSAGE));
+        }).catchError((e, k) {
+          throw Failure(DIOERROR_MESSAGE);
+        });
       }
     } on Failure catch (_) {
       product(StateModel(state: States.error));

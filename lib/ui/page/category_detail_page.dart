@@ -1,7 +1,6 @@
 import 'package:ayov2/getx/getx.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/ui/ui.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,11 +9,11 @@ import 'package:get/get.dart';
 class CategoryDetailPage extends GetView<CategoryDetailPageController> {
   @override
   Widget build(BuildContext context) {
-    List<BannerSecondaryModel> bannerSecondaries = controller
-        .pageModel.bannerSecondaries
-        .where((model) =>
-            model.categoryId == controller.pageModel.category.categoryId)
-        .toList();
+    // List<BannerSecondaryModel> bannerSecondaries = controller
+    //     .pageModel.bannerSecondaries
+    //     .where((model) =>
+    //         model.categoryId == controller.pageModel.category.categoryId)
+    //     .toList();
 
     List<SubCategoryModel> subCategories = controller.pageModel.subCategories
         .where((model) =>
@@ -62,30 +61,30 @@ class CategoryDetailPage extends GetView<CategoryDetailPageController> {
                     onTap: controller.routeToSearchPage,
                     text: 'mau belanja apa kak?',
                   ),
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      child: ImageSlider(
-                        itemCount: bannerSecondaries.length,
-                        itemBuilder: (_, int index) {
-                          return GestureDetector(
-                            onTap: () {
-                              print(index);
-                            },
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  bannerSecondaries[index].bannerSecondaryImage,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                              placeholder: (context, url) {
-                                return ShimmerLoader();
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  // flexibleSpace: FlexibleSpaceBar(
+                  //   background: Container(
+                  //     child: ImageSlider(
+                  //       itemCount: bannerSecondaries.length,
+                  //       itemBuilder: (_, int index) {
+                  //         return GestureDetector(
+                  //           onTap: () {
+                  //             print(index);
+                  //           },
+                  //           child: CachedNetworkImage(
+                  //             imageUrl:
+                  //                 bannerSecondaries[index].bannerSecondaryImage,
+                  //             fit: BoxFit.cover,
+                  //             width: double.infinity,
+                  //             height: double.infinity,
+                  //             placeholder: (context, url) {
+                  //               return ShimmerLoader();
+                  //             },
+                  //           ),
+                  //         );
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
                 ),
                 SliverToBoxAdapter(
                   child: Padding(

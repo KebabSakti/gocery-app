@@ -51,7 +51,7 @@ class HomeProductSection extends StatelessWidget {
                   children: [
                     GridView.builder(
                       shrinkWrap: true,
-                      itemCount: 2,
+                      itemCount: 6,
                       physics: NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: _crossAxisCount,
@@ -75,10 +75,14 @@ class HomeProductSection extends StatelessWidget {
               }
 
               if (product.state == States.error) {
-                return Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: PageError(
-                    onPressed: () {},
+                return Container(
+                  height: 300,
+                  child: PageState(
+                    iconData: Icons.wifi_off_rounded,
+                    title: 'Terjadi Kesalahan',
+                    text: 'Sentuh tombol di bawah untuk mencoba kembali',
+                    buttonText: 'Coba Lagi',
+                    onTap: controller.refresh,
                   ),
                 );
               }

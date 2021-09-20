@@ -1,13 +1,15 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
+import 'package:ayov2/getx/controller/global/cart_controller.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/util/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProductPageController extends GetxController {
-  final Rx<ProductFilterModel> filterModel = ProductFilterModel().obs;
+  final CartController cartController = Get.find();
 
+  final Rx<ProductFilterModel> filterModel = ProductFilterModel().obs;
   final Rx<StateModel<ProductPaginateModel>> pageState =
       StateModel<ProductPaginateModel>(
     state: States.loading,
@@ -108,6 +110,10 @@ class ProductPageController extends GetxController {
 
   void routeToProductDetailPage(ProductModel product) async {
     Get.toNamed(PRODUCT_DETAIL_PAGE, arguments: product);
+  }
+
+  void routeToCartPage() async {
+    await Get.toNamed(CART_PAGE);
   }
 
   void _init() {

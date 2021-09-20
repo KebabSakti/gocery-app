@@ -2,15 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class ImageSlider extends StatefulWidget {
-  final int itemCount;
-  final Function itemBuilder;
   final List<Widget> items;
 
-  ImageSlider({
-    this.itemCount,
-    this.itemBuilder,
-    this.items,
-  });
+  ImageSlider({this.items});
 
   @override
   _ImageSliderState createState() => _ImageSliderState();
@@ -23,8 +17,11 @@ class _ImageSliderState extends State<ImageSlider> {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        CarouselSlider(
-          items: widget.items,
+        CarouselSlider.builder(
+          itemCount: widget.items.length,
+          itemBuilder: (context, index) {
+            return widget.items[index];
+          },
           options: CarouselOptions(
             viewportFraction: 1.0,
             height: double.infinity,
@@ -37,21 +34,6 @@ class _ImageSliderState extends State<ImageSlider> {
             },
           ),
         ),
-        // CarouselSlider.builder(
-        //   itemCount: widget.itemCount,
-        //   itemBuilder: widget.itemBuilder,
-        //   options: CarouselOptions(
-        //     viewportFraction: 1.0,
-        //     height: double.infinity,
-        //     autoPlay: true,
-        //     enableInfiniteScroll: true,
-        //     onPageChanged: (index, _) {
-        //       setState(() {
-        //         active = index;
-        //       });
-        //     },
-        //   ),
-        // ),
         Align(
           alignment: Alignment.bottomLeft,
           child: Padding(

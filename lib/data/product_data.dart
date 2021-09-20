@@ -2,7 +2,53 @@ import 'dart:convert';
 
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/repo/repo.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+ProductPaginateModel _parsedPaginate(dynamic data) {
+  var parsedData = jsonDecode(data);
+
+  if (!parsedData['success']) throw Exception(parsedData['message']);
+
+  List<ProductModel> products = List<ProductModel>.from(
+    parsedData['data']['data'].map(
+      (item) => ProductModel.fromJson(item),
+    ),
+  );
+
+  PaginationModel paginateProduct =
+      PaginationModel.fromJson(parsedData['data']);
+
+  //PRODUCT WITH PAGINATION DATA
+  return ProductPaginateModel(
+    products: products,
+    pagination: paginateProduct,
+  );
+}
+
+List<ProductModel> _parsedProducts(dynamic data) {
+  var parsedData = jsonDecode(data);
+
+  if (!parsedData['success']) throw Exception(parsedData['message']);
+
+  List<ProductModel> products = List<ProductModel>.from(
+    parsedData['data'].map(
+      (item) => ProductModel.fromJson(item),
+    ),
+  );
+
+  return products;
+}
+
+ProductModel _parsedProduct(dynamic data) {
+  var parsedData = jsonDecode(data);
+
+  if (!parsedData['success']) throw Exception(parsedData['message']);
+
+  ProductModel product = ProductModel.fromJson(parsedData['data']);
+
+  return product;
+}
 
 class ProductData {
   final ProductRepo _productRepo = ProductRepo();
@@ -44,26 +90,7 @@ class ProductData {
       highSearch: highSearch,
     );
 
-    var parsedData = await jsonDecode(response.data);
-
-    if (!parsedData['success']) throw Exception(parsedData['message']);
-
-    List<ProductModel> products = List<ProductModel>.from(
-      await parsedData['data']['data'].map(
-        (item) => ProductModel.fromJson(item),
-      ),
-    );
-
-    PaginationModel paginateProduct =
-        PaginationModel.fromJson(await parsedData['data']);
-
-    //PRODUCT WITH PAGINATION DATA
-    ProductPaginateModel productPaginateModel = ProductPaginateModel(
-      products: products,
-      pagination: paginateProduct,
-    );
-
-    return productPaginateModel;
+    return compute(_parsedPaginate, response.data);
   }
 
   Future<List<ProductModel>> productTotal({
@@ -101,28 +128,12 @@ class ProductData {
       highSearch: highSearch,
     );
 
-    var parsedData = await jsonDecode(response.data);
-
-    if (!parsedData['success']) throw Exception(parsedData['message']);
-
-    List<ProductModel> products = List<ProductModel>.from(
-      await parsedData['data'].map(
-        (item) => ProductModel.fromJson(item),
-      ),
-    );
-
-    return products;
+    return compute(_parsedProducts, response.data);
   }
 
   Future<ProductModel> favourite({@required String productId}) async {
     var response = await _productRepo.favourite(productId: productId);
 
-    var parsedData = await jsonDecode(response.data);
-
-    if (!parsedData['success']) throw Exception(parsedData['message']);
-
-    ProductModel product = ProductModel.fromJson(await parsedData['data']);
-
-    return product;
+    return compute(_parsedProduct, response.data);
   }
 }

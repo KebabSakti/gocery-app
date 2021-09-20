@@ -1,6 +1,7 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/model/model.dart';
+import 'package:ayov2/util/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,20 +10,31 @@ class SearchPageController extends GetxController {
   final Search _searchCore = Search();
   final TextEditingController searchField = TextEditingController();
 
-  final RxBool loading = false.obs;
-  final RxBool loadingPage = false.obs;
   final RxString keyword = ''.obs;
-  final Rx<SearchResultModel> searchResultModel = SearchResultModel().obs;
-  final Rx<SearchPageModel> searchPageModel = SearchPageModel().obs;
+
+  final Rx<StateModel<SearchPageModel>> searchPage =
+      StateModel<SearchPageModel>(
+    state: States.loading,
+    data: SearchPageModel(),
+  ).obs;
+
+  final Rx<StateModel<SearchResultModel>> searchResult =
+      StateModel<SearchResultModel>(
+    state: States.initial,
+    data: SearchResultModel(),
+  ).obs;
 
   void loadPageData() async {
-    loadingPage(true);
+    try {
+      searchPage(StateModel<SearchPageModel>(state: States.loading));
 
-    await _appPage.search().then((model) {
-      searchPageModel(model);
-
-      loadingPage(false);
-    });
+      await _appPage.search().then((model) {
+        searchPage(
+            StateModel<SearchPageModel>(state: States.complete, data: model));
+      });
+    } on Failure catch (_) {
+      _routeToErrorPage();
+    }
   }
 
   void searchFieldListener() {
@@ -34,17 +46,25 @@ class SearchPageController extends GetxController {
   }
 
   void _search() async {
-    loading(true);
+    try {
+      searchResult(StateModel<SearchResultModel>(state: States.loading));
 
-    await _searchCore.search(keyword: keyword.value).then((model) {
-      searchResultModel(model);
-
-      loading(false);
-    });
+      await _searchCore.search(keyword: keyword.value).then((model) {
+        searchResult(
+            StateModel<SearchResultModel>(state: States.complete, data: model));
+      });
+    } on Failure catch (_) {
+      searchResult(StateModel(state: States.error));
+    }
   }
 
   void routeToProductPage(ProductFilterModel filter) async {
     Get.toNamed(PRODUCT_PAGE, arguments: filter);
+  }
+
+  void _routeToErrorPage() async {
+    await Get.toNamed(ERROR_PAGE);
+    loadPageData();
   }
 
   void _init() {
@@ -52,8 +72,9 @@ class SearchPageController extends GetxController {
       if (keyword.value.length > 0)
         _search();
       else
-        searchResultModel(SearchResultModel());
-    }, time: Duration(milliseconds: 500));
+        // searchResultModel(SearchResultModel());
+        searchResult(StateModel(state: States.initial));
+    }, time: Duration(milliseconds: 200));
 
     searchField.addListener(searchFieldListener);
 
@@ -66,11 +87,5 @@ class SearchPageController extends GetxController {
   void onInit() {
     _init();
     super.onInit();
-  }
-
-  @override
-  void onClose() {
-    // searchField.dispose();
-    super.onClose();
   }
 }
