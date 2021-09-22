@@ -27,77 +27,86 @@ class BundleItem extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           child: SectionHeading(
             heading: bundle.bundleName,
-            onPressed: () {},
+            onPressed: () {
+              controller.bundleClick(bundle.bundleId);
+            },
           ),
         ),
-        Ink(
-          height: 300,
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: CachedNetworkImageProvider(
-                bundle.bundleBackground,
+        Material(
+          child: Ink(
+            height: 300,
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(
+                  bundle.bundleBackground,
+                ),
               ),
             ),
-          ),
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              GestureDetector(
-                child: Container(
-                  width: (Get.size.width - 70) / 2,
-                  padding: EdgeInsets.only(right: 10),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.contain,
-                    imageUrl: bundle.bundleImage,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                GestureDetector(
+                  child: Container(
+                    width: (Get.size.width - 70) / 2,
+                    padding: EdgeInsets.only(right: 10),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.contain,
+                      imageUrl: bundle.bundleImage,
+                    ),
                   ),
+                  onTap: () {},
                 ),
-                onTap: () {},
-              ),
-              ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: products.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  ProductModel product = products[index];
+                ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: products.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    ProductModel product = products[index];
 
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      right: (index >= 0 && index != products.length) ? 10 : 0,
-                    ),
-                    child: ProductItem(
-                      product: product,
-                      onTap: () {},
-                    ),
-                  );
-                },
-              ),
-              InkWell(
-                borderRadius: BorderRadius.circular(15),
-                child: Ink(
-                  width: (Get.size.width - 70) / 2,
-                  decoration: BoxDecoration(
-                    color: Get.theme.colorScheme.background,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.chevron_right_rounded,
-                        size: 60,
-                        color: Get.theme.primaryColor,
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        right:
+                            (index >= 0 && index != products.length) ? 10 : 0,
                       ),
-                      SizedBox(height: 5),
-                      Text('Lihat Semua'),
-                    ],
-                  ),
+                      child: ProductItem(
+                        product: product,
+                        onTap: () {
+                          controller.routeToProductDetailPage(product);
+                        },
+                      ),
+                    );
+                  },
                 ),
-                onTap: () {},
-              ),
-            ],
+                InkWell(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Ink(
+                    width: (Get.size.width - 70) / 2,
+                    decoration: BoxDecoration(
+                      color: Get.theme.colorScheme.background,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          size: 60,
+                          color: Get.theme.primaryColor,
+                        ),
+                        SizedBox(height: 5),
+                        Text('Lihat Semua'),
+                      ],
+                    ),
+                  ),
+                  onTap: () {
+                    controller.bundleClick(bundle.bundleId);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],

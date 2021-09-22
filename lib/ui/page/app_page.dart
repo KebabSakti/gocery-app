@@ -1,9 +1,9 @@
+import 'package:ayov2/const/ayo_icons.dart';
 import 'package:ayov2/getx/getx.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/ui/ui.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class AppPage extends GetView<AppPageController> {
@@ -37,39 +37,45 @@ class AppPage extends GetView<AppPageController> {
                   showUnselectedLabels: true,
                   type: BottomNavigationBarType.fixed,
                   selectedItemColor: Get.theme.primaryColor,
-                  selectedFontSize: 12,
-                  unselectedFontSize: 10,
-                  // selectedIconTheme: IconThemeData(size: 30),
+                  // selectedFontSize: 10,
+                  // unselectedFontSize: 10,
+                  selectedIconTheme: IconThemeData(size: 22),
+                  unselectedIconTheme: IconThemeData(size: 20),
+                  selectedLabelStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 10,
+                  ),
+                  unselectedLabelStyle: TextStyle(fontSize: 10),
                   currentIndex: controller.activePage.value,
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: Icon(FontAwesomeIcons.shopify),
-                      label: 'Belanja',
+                      icon: Icon(Ayo.house),
+                      label: 'Beranda',
                     ),
                     BottomNavigationBarItem(
                       icon: IconWithDot(
-                        Icon(Icons.assignment_rounded),
+                        Icon(Ayo.notes),
                         value: 1,
                       ),
                       label: 'Pesanan',
                     ),
                     BottomNavigationBarItem(
                       icon: IconWithDot(
-                        Icon(Icons.ballot_rounded),
+                        Icon(Ayo.slack),
                         value: 4,
                       ),
                       label: 'Voucher',
                     ),
                     BottomNavigationBarItem(
                       icon: IconWithDot(
-                        Icon(Icons.notifications_rounded),
+                        Icon(Ayo.reminders),
                         value: 10,
                       ),
                       label: 'Notifikasi',
                     ),
                     BottomNavigationBarItem(
                       icon: IconWithDot(
-                        Icon(Icons.account_circle_rounded),
+                        Icon(Ayo.settings),
                       ),
                       label: 'Akun',
                     ),

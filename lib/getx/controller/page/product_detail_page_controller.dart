@@ -78,6 +78,10 @@ class ProductDetailPageControlller extends GetxController {
     _initialProductQty();
   }
 
+  void routeToProductPage(ProductFilterModel filter) async {
+    Get.toNamed(PRODUCT_PAGE, arguments: filter);
+  }
+
   void _routeToErrorPage() async {
     await Get.toNamed(ERROR_PAGE);
     loadPageData();

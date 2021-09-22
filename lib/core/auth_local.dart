@@ -9,20 +9,42 @@ class AuthLocal {
 
   final AuthData _authData = AuthData();
 
-  Future<CustomerModel> authenticate({
-    @required String customerId,
-    @required String customerPhone,
+  Future<CustomerModel> register({
     @required String customerName,
+    @required String customerPhone,
     @required String customerEmail,
-    @required String customerPassword,
     @required String customerFcm,
   }) async {
-    return await _authData.authenticate(
-      customerId: customerId,
+    return await _authData.register(
       customerName: customerName,
       customerPhone: customerPhone,
       customerEmail: customerEmail,
-      customerPassword: customerId,
+      customerFcm: customerFcm,
+    );
+  }
+
+  Future<CustomerModel> social({
+    @required String customerName,
+    @required String customerEmail,
+    @required String customerFcm,
+    @required String authType,
+  }) async {
+    return await _authData.social(
+      customerName: customerName,
+      customerEmail: customerEmail,
+      customerFcm: customerFcm,
+      authType: authType,
+    );
+  }
+
+  Future<CustomerModel> authenticate({
+    String customerId,
+    String customerPhone,
+    String customerFcm,
+  }) async {
+    return await _authData.authenticate(
+      customerId: customerId,
+      customerPhone: customerPhone,
       customerFcm: customerFcm,
     );
   }
@@ -49,17 +71,11 @@ class AuthLocal {
     return await _authData.exist(phoneNumber: phoneNumber, email: email);
   }
 
-  Future<bool> signout(String userUID) async {
-    return await _authData.signout(customerId: userUID);
-  }
+  Future signout() async {
+    CustomerModel user = await _appPreference.customer();
 
-  Future saveUserPreference(String userUID, String userToken) async {
-    await _appPreference.setUserUID(userUID);
-    await _appPreference.setUserToken(userToken);
-  }
+    await _authData.signout(customerId: user.customerId);
 
-  Future clearUserPreference() async {
-    await _appPreference.setUserUID('');
-    await _appPreference.setUserToken('');
+    await _appPreference.customer(data: CustomerModel());
   }
 }

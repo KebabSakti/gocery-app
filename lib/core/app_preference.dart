@@ -1,61 +1,34 @@
+import 'package:ayov2/model/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPreference {
-  Future<SharedPreferences> _instance() async {
-    return await SharedPreferences.getInstance();
-  }
+  Future<CustomerModel> customer({CustomerModel data}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  Future<bool> getOnboarding() async {
-    SharedPreferences prefs = await _instance();
+    if (data != null) {
+      prefs.setString('id', data.customerId);
+      prefs.setString('phone', data.customerPhone);
+      prefs.setString('name', data.customerName);
+      prefs.setString('email', data.customerEmail);
+      prefs.setString('fcm', data.customerFcm);
+      prefs.setInt('point', data.customerPoint);
+      prefs.setString('token', data.customerToken);
 
-    return prefs.getBool('onboarding') ?? false;
-  }
-
-  Future<bool> setOnboarding(bool value) async {
-    SharedPreferences prefs = await _instance();
-
-    return await prefs.setBool('onboarding', value);
-  }
-
-  Future setUserUID(String value) async {
-    SharedPreferences prefs = await _instance();
-
-    await prefs.setString('user_uid', value);
-  }
-
-  Future<String> getUserUID() async {
-    SharedPreferences prefs = await _instance();
-
-    return prefs.getString('user_uid');
-  }
-
-  Future setUserToken(String value) async {
-    SharedPreferences prefs = await _instance();
-
-    await prefs.setString('user_token', value);
-  }
-
-  Future<String> getUserToken() async {
-    SharedPreferences prefs = await _instance();
-
-    return prefs.getString('user_token');
-  }
-
-  Future setFcmToken(String value) async {
-    SharedPreferences prefs = await _instance();
-
-    await prefs.setString('fcm_token', value);
-  }
-
-  Future<String> getFcmToken() async {
-    SharedPreferences prefs = await _instance();
-
-    return prefs.getString('fcm_token');
-  }
-
-  Future clearPreference() async {
-    SharedPreferences prefs = await _instance();
-
-    await prefs.clear();
+      return data;
+    } else {
+      if (prefs.getString('id') == null) {
+        return null;
+      } else {
+        return CustomerModel(
+          customerId: prefs.getString('id'),
+          customerPhone: prefs.getString('phone'),
+          customerName: prefs.getString('name'),
+          customerEmail: prefs.getString('email'),
+          customerFcm: prefs.getString('fcm'),
+          customerPoint: prefs.getInt('point'),
+          customerToken: prefs.getString('token'),
+        );
+      }
+    }
   }
 }

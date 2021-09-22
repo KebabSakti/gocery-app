@@ -3,6 +3,7 @@ const String ONBOARDING_PAGE = '/onboarding';
 const String LOGIN_PAGE = '/login';
 const String REGISTER_PAGE = '/register';
 const String OTP_PAGE = '/otp';
+const String PHONE_LOGIN_PAGE = '/phone_login';
 const String APP_PAGE = '/app';
 const String HOME_PAGE = '/home';
 const String PRODUCT_FILTER_PAGE = '/product_filter';

@@ -28,7 +28,7 @@ class CartPage extends GetView<CartPageController> {
 
               if (products.length == 0) {
                 return PageState(
-                  iconData: Icons.local_mall_rounded,
+                  iconData: Icons.shopping_cart_rounded,
                   title: 'Keranjang Kosong',
                   text: 'Ayo belanja dulu, banyak barang murah meriah loh.',
                 );

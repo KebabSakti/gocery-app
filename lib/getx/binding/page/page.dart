@@ -16,3 +16,4 @@ export './cart_page_binding.dart';
 export './order_summary_page_binding.dart';
 export './delivery_detail_page_binding.dart';
 export './map_page_binding.dart';
+export './phone_login_page_binding.dart';

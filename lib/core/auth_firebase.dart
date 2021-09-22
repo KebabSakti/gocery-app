@@ -10,18 +10,13 @@ class AuthFirebase {
 
   Future<OAuthCredential> facebookCredential() async {
     final LoginResult result = await FacebookAuth.instance
-        .login(loginBehavior: LoginBehavior.NATIVE_WITH_FALLBACK);
+        .login(loginBehavior: LoginBehavior.WEB_ONLY);
 
     return FacebookAuthProvider.credential(result.accessToken.token);
   }
 
   Future<OAuthCredential> googleCredential() async {
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-
-    // print(googleUser.displayName);
-    // print(googleUser.email);
-
-    // return null;
 
     if (googleUser == null) return null;
 

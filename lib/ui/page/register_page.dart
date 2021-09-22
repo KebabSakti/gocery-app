@@ -164,7 +164,7 @@ class RegisterPage extends GetView<RegisterPageController> {
             ),
             SizedBox(
               width: double.infinity,
-              height: 40,
+              height: 45,
               child: FlatButton(
                 onPressed: controller.submitRegisterForm,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

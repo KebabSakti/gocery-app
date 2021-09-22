@@ -7,20 +7,54 @@ import 'package:flutter/material.dart';
 class AuthData {
   final AuthRepo _authRepo = AuthRepo();
 
-  Future<CustomerModel> authenticate({
-    @required String customerId,
+  Future<CustomerModel> register({
+    @required String customerName,
     @required String customerPhone,
+    @required String customerEmail,
+    @required String customerFcm,
+  }) async {
+    var response = await _authRepo.register(
+      customerName: customerName,
+      customerPhone: customerPhone,
+      customerEmail: customerEmail,
+      customerFcm: customerFcm,
+    );
+
+    var parsedData = await jsonDecode(response.data);
+
+    if (!parsedData['success']) throw Exception(parsedData['message']);
+
+    return CustomerModel.fromJson(parsedData['data']);
+  }
+
+  Future<CustomerModel> social({
     @required String customerName,
     @required String customerEmail,
-    @required String customerPassword,
     @required String customerFcm,
+    @required String authType,
+  }) async {
+    var response = await _authRepo.social(
+      customerName: customerName,
+      customerEmail: customerEmail,
+      customerFcm: customerFcm,
+      authType: authType,
+    );
+
+    var parsedData = await jsonDecode(response.data);
+
+    if (!parsedData['success']) throw Exception(parsedData['message']);
+
+    return CustomerModel.fromJson(parsedData['data']);
+  }
+
+  Future<CustomerModel> authenticate({
+    String customerId,
+    String customerPhone,
+    String customerFcm,
   }) async {
     var response = await _authRepo.authenticate(
       customerId: customerId,
       customerPhone: customerPhone,
-      customerName: customerName,
-      customerEmail: customerEmail,
-      customerPassword: customerPassword,
       customerFcm: customerFcm,
     );
 

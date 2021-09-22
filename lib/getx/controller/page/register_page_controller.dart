@@ -1,8 +1,6 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
-import 'package:ayov2/getx/getx.dart';
 import 'package:ayov2/helper/helper.dart';
-import 'package:ayov2/model/model.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,12 +8,12 @@ import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class RegisterPageController extends GetxController {
-  final GlobalObs _globalObs = Get.find();
-  final AppPreference _appPreference = Get.find();
   final AuthFirebase _authFirebase = Get.find();
   final AuthLocal _authLocal = Get.find();
+  final AppPreference _appPreference = Get.find();
   final Helper _helper = Get.find();
 
+  final Fcm _fcm = Fcm();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameField = TextEditingController();
   final TextEditingController emailField = TextEditingController();
@@ -30,11 +28,9 @@ class RegisterPageController extends GetxController {
       PhoneNumber phoneNumber = await PhoneNumber.getRegionInfoFromPhoneNumber(
           '+62${phoneField.text}', 'ID');
 
-      if (!await _authLocal.exist(phoneNumber: phoneNumber.toString()))
-        throw Failure(PHONE_ALREADY_REGISTERED);
-
-      if (!await _authLocal.exist(email: emailField.text))
-        throw Failure(EMAIL_ALREADY_REGISTERED);
+      if (!await _authLocal.exist(
+          email: emailField.text, phoneNumber: phoneNumber.toString()))
+        throw Failure(PHONE_EMAIL_EXIST);
 
       await _authFirebase.signInWithPhone(
         phoneNumber.toString(),
@@ -49,15 +45,12 @@ class RegisterPageController extends GetxController {
           var userCredential = await _routeToOtpPage(
               verificationId, resendToken, phoneNumber.toString());
 
-          if (userCredential == null)
-            _helper.dialog.close();
-          else
-            _authenticate(userCredential.user);
+          if (userCredential != null) _register();
         },
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await _authFirebase
-              .signInWithCredential(credential)
-              .then((result) => _authenticate(result.user));
+          await _authFirebase.signInWithCredential(credential);
+
+          _register();
         },
       );
     } on DioError {
@@ -80,26 +73,23 @@ class RegisterPageController extends GetxController {
     if (formKey.currentState.validate()) _phoneSignIn();
   }
 
-  void _authenticate(User user) async {
+  void _register() async {
     try {
-      CustomerModel customerModel = await _authLocal.authenticate(
-        customerId: user.uid,
+      await _authLocal
+          .register(
         customerName: nameField.text,
-        customerPhone: user.phoneNumber,
         customerEmail: emailField.text,
-        customerPassword: user.uid,
-        customerFcm: await _appPreference.getFcmToken(),
-      );
+        customerPhone: '+62${phoneField.text}',
+        customerFcm: await _fcm.token(),
+      )
+          .then((result) async {
+        await _appPreference.customer(data: result);
 
-      await _authLocal.saveUserPreference(
-          customerModel.customerId, customerModel.customerToken);
-
-      _globalObs.customerModel(customerModel);
-
-      _routeToAppPage();
-    } on DioError {
+        _routeToAppPage();
+      }).catchError((k, v) => throw Failure(k.toString()));
+    } on Failure catch (e) {
       _helper.dialog.close();
-      _helper.dialog.error(DIOERROR_MESSAGE, dismissible: true);
+      _helper.toast.show(e.message);
     }
   }
 

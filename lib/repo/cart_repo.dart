@@ -1,5 +1,4 @@
 import 'package:ayov2/const/const.dart';
-import 'package:ayov2/core/core.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/service/service.dart';
 import 'package:dio/dio.dart' as dio;
@@ -8,14 +7,9 @@ import 'package:get/get.dart';
 
 class CartRepo {
   final Network _network = Get.find();
-  final AppPreference _appPreference = Get.find();
 
   Future<dynamic> cart() async {
-    var response = await _network.action(
-      Methods.POST,
-      CART_API,
-      authToken: await _appPreference.getUserToken(),
-    );
+    var response = await _network.action(Methods.POST, CART_API);
 
     return response;
   }
@@ -26,7 +20,6 @@ class CartRepo {
     var response = await _network.action(
       Methods.POST,
       CART_UPDATE_API,
-      authToken: await _appPreference.getUserToken(),
       data: dio.FormData.fromMap({
         "cart_item": cartItems
             .map((item) => {

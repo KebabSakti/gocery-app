@@ -1,6 +1,7 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/getx/controller/global/cart_controller.dart';
+import 'package:ayov2/getx/obs/obs.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/util/enums.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:get/get.dart';
 
 class ProductPageController extends GetxController {
   final CartController cartController = Get.find();
+  final GlobalObs globalObs = Get.find();
 
   final Rx<ProductFilterModel> filterModel = ProductFilterModel().obs;
   final Rx<StateModel<ProductPaginateModel>> pageState =
@@ -56,6 +58,18 @@ class ProductPageController extends GetxController {
     } on Failure catch (_) {
       pageState(StateModel(state: States.error));
     }
+  }
+
+  void selectCategory(int index) {
+    String _category =
+        (index == 0) ? '' : globalObs.categoryModel[index - 1].categoryId;
+
+    filterModel(filterModel().copyWith(category: _category));
+  }
+
+  int getDefaultTab() {
+    return globalObs.categoryModel
+        .indexWhere((item) => item.categoryId == filterModel().category);
   }
 
   void _loadMoreProduct(double offset, double maxScroll) async {

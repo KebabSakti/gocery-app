@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/config/config.dart';
+import 'package:ayov2/core/core.dart';
+import 'package:ayov2/model/model.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' as getx;
 
 enum Methods {
   GET,
@@ -11,6 +14,8 @@ enum Methods {
 }
 
 class Network {
+  final AppPreference _appPreference = getx.Get.find();
+
   Dio _dio;
 
   Network() {
@@ -55,14 +60,16 @@ class Network {
     dynamic data,
     CancelToken cancelToken,
   }) async {
+    CustomerModel user = await _appPreference.customer();
+
     //options
     if (baseUrl != null) _dio.options.baseUrl = baseUrl;
     if (connectTimeout != null) _dio.options.connectTimeout = connectTimeout;
     if (receiveTimeout != null) _dio.options.receiveTimeout = receiveTimeout;
 
     //add auth header
-    if (authToken != null)
-      _dio.options.headers["Authorization"] = "Bearer $authToken";
+    if (user != null)
+      _dio.options.headers["Authorization"] = "Bearer ${user.customerToken}";
 
     Response response;
 

@@ -19,7 +19,10 @@ class ProductDetailRelatedSection extends StatelessWidget {
           children: [
             SectionHeading(
               heading: 'Produk Terkait',
-              onPressed: () {},
+              onPressed: () {
+                controller.routeToProductPage(
+                    ProductFilterModel(category: pageModel.product.categoryId));
+              },
             ),
             SizedBox(height: 15),
             SizedBox(

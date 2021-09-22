@@ -35,11 +35,10 @@ class HomePageController extends GetxController {
     try {
       _helper.dialog.loading();
 
-      await _authLocal.signout(_globalObs.customerModel.value.customerId);
-      await _authLocal.clearUserPreference();
+      await _authLocal.signout();
       await _authFirebase.signOut();
 
-      _routeToLoginPage();
+      _routeToOnboardingPage();
     } catch (e) {
       _helper.dialog.close();
       _helper.dialog.error(e.toString(), dismissible: true);
@@ -181,7 +180,7 @@ class HomePageController extends GetxController {
     appPageController.openPanel(PanelBody.category);
   }
 
-  void sliderOnClick(String link) {
+  void bundleClick(String link) {
     routeToProductPage(ProductFilterModel(productBundleId: link));
   }
 
@@ -235,10 +234,6 @@ class HomePageController extends GetxController {
     Get.toNamed(PRODUCT_DETAIL_PAGE, arguments: product);
   }
 
-  void _routeToLoginPage() {
-    Get.offAllNamed(LOGIN_PAGE);
-  }
-
   void routeToCartPage() {
     Get.toNamed(CART_PAGE);
   }
@@ -246,6 +241,10 @@ class HomePageController extends GetxController {
   void _routeToErrorPage() async {
     await Get.toNamed(ERROR_PAGE);
     homeData();
+  }
+
+  void _routeToOnboardingPage() {
+    Get.offAllNamed(ONBOARDING_PAGE);
   }
 
   void init() async {

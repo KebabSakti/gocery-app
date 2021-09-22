@@ -1,8 +1,6 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
-import 'package:ayov2/getx/getx.dart';
 import 'package:ayov2/helper/helper.dart';
-import 'package:ayov2/model/model.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,35 +8,63 @@ import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class LoginPageController extends GetxController {
-  final GlobalObs _globalObs = Get.find();
-  final AppPreference _appPreference = Get.find();
   final AuthFirebase _authFirebase = Get.find();
   final AuthLocal _authLocal = Get.find();
   final Helper _helper = Get.find();
+  final AppPreference _appPreference = Get.find();
 
   final TextEditingController phoneField = TextEditingController();
+  final Fcm _fcm = Fcm();
 
   void facebookSignIn() async {
-    await _socialSignIn(await _authFirebase.facebookCredential());
+    try {
+      _helper.dialog.loading();
+
+      await _socialSignIn(await _authFirebase.facebookCredential());
+    } catch (e) {
+      print(e.toString());
+
+      _helper.dialog.close();
+      _helper.toast.show(GENERAL_MESSAGE);
+    }
   }
 
   void googleSignIn() async {
     try {
+      _helper.dialog.loading();
+
       await _socialSignIn(await _authFirebase.googleCredential());
     } catch (e) {
-      print(e);
+      print(e.toString());
+
+      _helper.dialog.close();
+      _helper.toast.show(GENERAL_MESSAGE);
     }
   }
 
   Future _socialSignIn(OAuthCredential credential) async {
     try {
       if (credential != null) {
-        _helper.dialog.loading();
-        await _authFirebase
-            .signInWithCredential(credential)
-            .then((result) => _authenticate(result.user));
+        UserCredential userCredential =
+            await _authFirebase.signInWithCredential(credential);
+
+        _authLocal
+            .social(
+          customerName: userCredential.user.displayName,
+          customerEmail: userCredential.user.email ??
+              userCredential.user.providerData[0].email,
+          authType: userCredential.additionalUserInfo.providerId,
+          customerFcm: await _fcm.token(),
+        )
+            .then((result) async {
+          await _appPreference.customer(data: result);
+
+          _routeToAppPage();
+        }).catchError((k, v) => throw Failure(k.toString()));
       }
-    } catch (_) {
+    } on Failure catch (e) {
+      print(e.toString());
+
       _helper.dialog.close();
       _helper.toast.show(GENERAL_MESSAGE);
     }
@@ -68,18 +94,17 @@ class LoginPageController extends GetxController {
           throw Failure(GENERAL_MESSAGE);
         },
         codeSent: (String verificationId, int resendToken) async {
-          var userCredential = await _routeToOtpPage(
-              verificationId, resendToken, phoneNumber.toString());
+          _routeToOtpPage(verificationId, resendToken, phoneNumber.toString());
 
-          if (userCredential == null)
-            _helper.dialog.close();
-          else
-            _authenticate(userCredential.user);
+          // if (userCredential == null)
+          //   _helper.dialog.close();
+          // else
+          //   _authenticate(userCredential);
         },
         verificationCompleted: (PhoneAuthCredential credential) async {
           await _authFirebase
               .signInWithCredential(credential)
-              .then((result) => _authenticate(result.user));
+              .then((result) => _authenticate(result));
         },
       );
     } on Failure catch (e) {
@@ -88,35 +113,32 @@ class LoginPageController extends GetxController {
     }
   }
 
-  void _authenticate(User user) async {
+  void _authenticate(UserCredential credential) async {
     try {
-      CustomerModel customerModel = await _authLocal
+      await _authLocal
           .authenticate(
-            customerId: user.uid,
-            customerName: user.displayName,
-            customerPhone: user.phoneNumber,
-            customerEmail: user.email,
-            customerPassword: user.uid,
-            customerFcm: await _appPreference.getFcmToken(),
-          )
-          .catchError((e, t) => throw Failure(DIOERROR_MESSAGE));
+        customerPhone: credential.user.phoneNumber,
+        customerFcm: await _fcm.token(),
+      )
+          .then((result) async {
+        await _appPreference.customer(data: result);
 
-      await _authLocal.saveUserPreference(
-          customerModel.customerId, customerModel.customerToken);
-
-      _globalObs.customerModel(customerModel);
-
-      _routeToAppPage();
+        _routeToAppPage();
+      }).catchError((k, v) => throw Failure(k.toString()));
     } on Failure catch (e) {
       _helper.dialog.close();
       _helper.toast.show(e.message);
     }
   }
 
-  Future<dynamic> _routeToOtpPage(
-      String verificationId, int resendToken, String phoneNumber) async {
-    return await Get.toNamed(OTP_PAGE,
+  void _routeToOtpPage(
+      String verificationId, int resendToken, String phoneNumber) {
+    Get.toNamed(OTP_PAGE,
         arguments: [verificationId, resendToken, phoneNumber]);
+  }
+
+  void routeToPhoneLoginPage() {
+    Get.toNamed(PHONE_LOGIN_PAGE);
   }
 
   void _routeToAppPage() {

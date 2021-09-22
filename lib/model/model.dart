@@ -1,4 +1,4 @@
-export './preference/preference.dart';
+export 'preference/preference_model.dart';
 export './customer/customer_model.dart';
 export './fcm/fcm_model.dart';
 export './base_model/base_model.dart';

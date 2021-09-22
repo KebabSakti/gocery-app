@@ -1,5 +1,5 @@
 const String LOGO = 'assets/images/logo-26.svg';
-const String ONBOARDING_BACKGROUND = 'assets/images/onboarding-bg.jpg';
+const String ONBOARDING_BACKGROUND = 'assets/images/onboard-min.svg';
 const String LOGIN_BACKGROUND = 'assets/images/login-bg.jpg';
 const String QR_ICON = 'assets/images/qr.svg';
 const String COIN_ICON = 'assets/images/coin.svg';
@@ -8,6 +8,8 @@ const String EMPTY_CART = 'assets/images/empty-cart.svg';
 const String ALL_CATEGORY = 'assets/images/groceries.svg';
 const String NO_DATA = 'assets/images/no_data.svg';
 const String ERROR = 'assets/images/error.svg';
+const String GOOGLE = 'assets/images/google-g.svg';
+const String FACEBOOK = 'assets/images/facebook.svg';
 
 const String QR_SCAN_ANIMATION = 'assets/animations/qr-scan.json';
 

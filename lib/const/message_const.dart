@@ -2,7 +2,7 @@ const String DIOERROR_MESSAGE =
     'Jaringan anda sedang tidak stabil, cobalah beberapa saat lagi';
 
 const String GENERAL_MESSAGE =
-    'Terjadi kesalahan pada sistem, cobalah beberapa saat lagi';
+    'Terjadi kesalahan, cek koneksi internet anda atau cobalah beberapa saat lagi';
 
 const String FIELD_REQUIRED = 'Field tidak boleh kosong';
 
@@ -24,3 +24,5 @@ const String NO_DATA_MESSAGE =
 
 const String ERROR_MESSAGE =
     'Yahh, terjadi kesalahan, refresh untuk mencoba kembali';
+
+const String PHONE_EMAIL_EXIST = 'Nomor hp atau email sudah terdaftar';

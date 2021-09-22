@@ -31,6 +31,11 @@ class AppRoute {
       page: () => OtpPage(),
     ),
     GetPage(
+      name: PHONE_LOGIN_PAGE,
+      binding: PhoneLoginPageBinding(),
+      page: () => PhoneLoginPage(),
+    ),
+    GetPage(
       name: APP_PAGE,
       binding: AppPageBinding(),
       page: () => AppPage(),

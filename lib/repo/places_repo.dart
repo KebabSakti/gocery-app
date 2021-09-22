@@ -1,5 +1,4 @@
 import 'package:ayov2/const/const.dart';
-import 'package:ayov2/core/core.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/service/service.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +7,11 @@ import 'package:dio/dio.dart' as dio;
 
 class PlacesRepo {
   final Network _network = Get.find();
-  final AppPreference _appPreference = Get.find();
 
   Future<dynamic> index({String keyword}) async {
     var response = await _network.action(
       Methods.POST,
       PLACES_INDEX_API,
-      authToken: await _appPreference.getUserToken(),
       data: {
         "keyword": keyword,
       },
@@ -27,7 +24,6 @@ class PlacesRepo {
     await _network.action(
       Methods.POST,
       PLACES_STORE_API,
-      authToken: await _appPreference.getUserToken(),
       data: dio.FormData.fromMap({
         "places": places
             .map((item) => {

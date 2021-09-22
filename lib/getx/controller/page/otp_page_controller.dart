@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/helper/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,7 +26,7 @@ class OtpPageController extends GetxController {
           print(verificationId);
         },
         verificationFailed: (FirebaseAuthException exception) {
-          throw exception;
+          throw Failure(exception.message);
         },
         codeSent: (String verId, int resToken) async {
           verificationId = verId;
@@ -37,10 +36,7 @@ class OtpPageController extends GetxController {
           //
         },
       );
-    } on FirebaseAuthException catch (_) {
-      _helper.dialog.close();
-      _helper.toast.show(GENERAL_MESSAGE);
-    } catch (e) {
+    } on Failure catch (e) {
       _helper.dialog.close();
       _helper.toast.show(e.message);
     }
@@ -53,17 +49,14 @@ class OtpPageController extends GetxController {
       PhoneAuthCredential phoneCredential =
           _authFirebase.phoneCredential(verificationId, otp.value);
 
-      if (phoneCredential != null)
-        await _authFirebase
+      if (phoneCredential != null) {
+        UserCredential userCredential = await _authFirebase
             .signInWithCredential(phoneCredential)
-            .then((result) => Get.back(result: result, closeOverlays: true));
-    } on FirebaseAuthException catch (e) {
-      _helper.dialog.close();
-      if (e.code == 'invalid-verification-code')
-        _helper.toast.show(INVALID_OTP_CODE);
-      else
-        _helper.toast.show(GENERAL_MESSAGE);
-    } catch (e) {
+            .catchError((k, v) => throw Failure(k.toString()));
+
+        Get.back(closeOverlays: true, result: userCredential);
+      }
+    } on Failure catch (e) {
       _helper.dialog.close();
       _helper.toast.show(e.message);
     }
