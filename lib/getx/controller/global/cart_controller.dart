@@ -1,3 +1,4 @@
+import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:get/get.dart';
@@ -48,8 +49,12 @@ class CartController extends GetxController {
         0, (sum, item) => sum + double.parse(item.cartItemPrice)));
   }
 
-  void _updateCart() {
-    _cart.cartUpdate(cartItems: cartItems);
+  void _updateCart() async {
+    try {
+      await _cart.cartUpdate(cartItems: cartItems);
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
+    }
   }
 
   void _evaluateItems() {

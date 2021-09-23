@@ -32,8 +32,8 @@ class SearchPageController extends GetxController {
         searchPage(
             StateModel<SearchPageModel>(state: States.complete, data: model));
       });
-    } on Failure catch (_) {
-      _routeToErrorPage();
+    } catch (e) {
+      ErrorHandler(e).redirect(loadPageData);
     }
   }
 
@@ -53,7 +53,7 @@ class SearchPageController extends GetxController {
         searchResult(
             StateModel<SearchResultModel>(state: States.complete, data: model));
       });
-    } on Failure catch (_) {
+    } catch (_) {
       searchResult(StateModel(state: States.error));
     }
   }
@@ -62,17 +62,11 @@ class SearchPageController extends GetxController {
     Get.toNamed(PRODUCT_PAGE, arguments: filter);
   }
 
-  void _routeToErrorPage() async {
-    await Get.toNamed(ERROR_PAGE);
-    loadPageData();
-  }
-
   void _init() {
     debounce(keyword, (_) {
       if (keyword.value.length > 0)
         _search();
       else
-        // searchResultModel(SearchResultModel());
         searchResult(StateModel(state: States.initial));
     }, time: Duration(milliseconds: 200));
 

@@ -1,7 +1,6 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/getx/getx.dart';
-import 'package:ayov2/helper/helper.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,7 +10,6 @@ class IntroPageController extends GetxController {
   final GlobalObs _globalObs = Get.find();
   final AppPreference _appPreference = Get.find();
   final AuthLocal _authLocal = Get.find();
-  final Helper _helper = Get.find();
 
   final Fcm _fcm = Fcm();
 
@@ -29,22 +27,16 @@ class IntroPageController extends GetxController {
     try {
       CustomerModel user = await _appPreference.customer();
 
-      await _authLocal
-          .authenticate(
+      CustomerModel customerModel = await _authLocal.authenticate(
         customerId: user.customerId,
         customerFcm: await _fcm.token(),
-      )
-          .then((result) async {
-        await _appPreference.customer(data: result);
+      );
 
-        _routeToAppPage();
-      }).catchError((k, v) => throw Failure(k.toString()));
-    } on Failure catch (e) {
-      print(e.message);
+      await _appPreference.customer(data: customerModel);
 
-      _helper.dialog.close();
-
-      _routeToOnboardingPage();
+      _routeToAppPage();
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 

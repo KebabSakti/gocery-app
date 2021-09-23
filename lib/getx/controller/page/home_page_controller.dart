@@ -40,8 +40,7 @@ class HomePageController extends GetxController {
 
       _routeToOnboardingPage();
     } catch (e) {
-      _helper.dialog.close();
-      _helper.dialog.error(e.toString(), dismissible: true);
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 
@@ -97,10 +96,8 @@ class HomePageController extends GetxController {
                 (model.products.length == 0) ? States.empty : States.complete,
           ),
         );
-      }).catchError((e, k) {
-        throw Failure(DIOERROR_MESSAGE);
       });
-    } on Failure catch (_) {
+    } catch (_) {
       product(StateModel(state: States.error));
     }
   }
@@ -128,11 +125,9 @@ class HomePageController extends GetxController {
               state: States.complete,
             ),
           );
-        }).catchError((e, k) {
-          throw Failure(DIOERROR_MESSAGE);
         });
       }
-    } on Failure catch (_) {
+    } catch (_) {
       product(StateModel(state: States.error));
     }
   }
@@ -161,17 +156,14 @@ class HomePageController extends GetxController {
           state: States.complete,
           data: model,
         ));
-      }).catchError((e, k) => throw Failure(DIOERROR_MESSAGE));
-    } on Failure catch (_) {
-      // home(StateModel(state: States.error));
-
-      //route to error page
-      _routeToErrorPage();
+      });
+    } catch (e) {
+      ErrorHandler(e).redirect(homeData);
     }
   }
 
   void refresh() async {
-    await homeData();
+    homeData();
 
     filterModel(ProductFilterModel());
   }
@@ -191,7 +183,7 @@ class HomePageController extends GetxController {
   void _routeToQrPage() async {
     var result = await Get.toNamed(QR_PAGE);
 
-    if (result != null) _helper.toast.show(result);
+    if (result != null) print(result);
   }
 
   void routeToCategoryPage() {
@@ -236,11 +228,6 @@ class HomePageController extends GetxController {
 
   void routeToCartPage() {
     Get.toNamed(CART_PAGE);
-  }
-
-  void _routeToErrorPage() async {
-    await Get.toNamed(ERROR_PAGE);
-    homeData();
   }
 
   void _routeToOnboardingPage() {

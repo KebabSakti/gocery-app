@@ -54,8 +54,8 @@ class ProductPageController extends GetxController {
                 (model.products.length == 0) ? States.empty : States.complete,
           ),
         );
-      }).catchError((e, k) => throw Failure(DIOERROR_MESSAGE));
-    } on Failure catch (_) {
+      });
+    } catch (_) {
       pageState(StateModel(state: States.error));
     }
   }
@@ -96,9 +96,9 @@ class ProductPageController extends GetxController {
               state: States.complete,
             ),
           );
-        }).catchError((e, k) => throw Failure(DIOERROR_MESSAGE));
+        });
       }
-    } on Failure catch (_) {
+    } catch (_) {
       pageState(StateModel(state: States.error));
     }
   }

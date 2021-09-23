@@ -3,5 +3,5 @@ import 'package:ayov2/helper/toast.dart';
 
 class Helper {
   final AyoDialog dialog = AyoDialog();
-  final AyoToast toast = AyoToast();
+  final AyoToast toasts = AyoToast();
 }

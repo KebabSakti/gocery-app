@@ -1,6 +1,7 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/helper/helper.dart';
+import 'package:ayov2/model/model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,26 +52,24 @@ class PhoneLoginPageController extends GetxController {
         },
       );
     } on Failure catch (e) {
-      _helper.dialog.close();
-      _helper.toast.show(e.message);
+      ErrorHandler(e).toast(e.message);
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 
   void _authenticate(UserCredential credential) async {
     try {
-      await _authLocal
-          .authenticate(
+      CustomerModel customerModel = await _authLocal.authenticate(
         customerPhone: credential.user.phoneNumber,
         customerFcm: await _fcm.token(),
-      )
-          .then((result) async {
-        await _appPreference.customer(data: result);
+      );
 
-        _routeToAppPage();
-      }).catchError((k, v) => throw Failure(k.toString()));
-    } on Failure catch (e) {
-      _helper.dialog.close();
-      _helper.toast.show(e.message);
+      await _appPreference.customer(data: customerModel);
+
+      _routeToAppPage();
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 

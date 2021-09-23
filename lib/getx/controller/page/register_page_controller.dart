@@ -1,7 +1,7 @@
 import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/helper/helper.dart';
-import 'package:dio/dio.dart';
+import 'package:ayov2/model/model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -21,8 +21,6 @@ class RegisterPageController extends GetxController {
 
   void _phoneSignIn() async {
     try {
-      if (phoneField.text.length == 0) throw Failure(PHONE_REQUIRED);
-
       _helper.dialog.loading();
 
       PhoneNumber phoneNumber = await PhoneNumber.getRegionInfoFromPhoneNumber(
@@ -53,12 +51,10 @@ class RegisterPageController extends GetxController {
           _register();
         },
       );
-    } on DioError {
-      _helper.dialog.close();
-      _helper.toast.show(DIOERROR_MESSAGE);
+    } on Failure catch (e) {
+      ErrorHandler(e).toast(e.message);
     } catch (e) {
-      _helper.dialog.close();
-      _helper.toast.show(e.message);
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 
@@ -75,21 +71,18 @@ class RegisterPageController extends GetxController {
 
   void _register() async {
     try {
-      await _authLocal
-          .register(
+      CustomerModel customerModel = await _authLocal.register(
         customerName: nameField.text,
         customerEmail: emailField.text,
         customerPhone: '+62${phoneField.text}',
         customerFcm: await _fcm.token(),
-      )
-          .then((result) async {
-        await _appPreference.customer(data: result);
+      );
 
-        _routeToAppPage();
-      }).catchError((k, v) => throw Failure(k.toString()));
-    } on Failure catch (e) {
-      _helper.dialog.close();
-      _helper.toast.show(e.message);
+      await _appPreference.customer(data: customerModel);
+
+      _routeToAppPage();
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 

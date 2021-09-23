@@ -30,8 +30,11 @@ class ProductDetailPageControlller extends GetxController {
         productDetail(StateModel<ProductDetailPageModel>(
             state: States.complete, data: model));
       }).catchError((e, k) => throw Failure(DIOERROR_MESSAGE));
-    } on Failure catch (_) {
-      _routeToErrorPage();
+    } catch (e) {
+      ErrorHandler(e).redirect(() {
+        loadPageData();
+        _initialProductQty();
+      });
     }
   }
 
@@ -46,13 +49,17 @@ class ProductDetailPageControlller extends GetxController {
   }
 
   void addProductFavourite(String productId) async {
-    productDetail(productDetail().copyWith(state: States.other1));
+    try {
+      productDetail(productDetail().copyWith(state: States.other1));
 
-    await _productCore.favourite(productId: productId).then((model) {
-      productDetail(StateModel<ProductDetailPageModel>(
-          state: States.complete,
-          data: productDetail().data.copyWith(product: model)));
-    });
+      await _productCore.favourite(productId: productId).then((model) {
+        productDetail(StateModel<ProductDetailPageModel>(
+            state: States.complete,
+            data: productDetail().data.copyWith(product: model)));
+      });
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
+    }
   }
 
   void routeToProductDetailPage(ProductModel product) async {
@@ -80,12 +87,6 @@ class ProductDetailPageControlller extends GetxController {
 
   void routeToProductPage(ProductFilterModel filter) async {
     Get.toNamed(PRODUCT_PAGE, arguments: filter);
-  }
-
-  void _routeToErrorPage() async {
-    await Get.toNamed(ERROR_PAGE);
-    loadPageData();
-    _initialProductQty();
   }
 
   Future<void> _init() async {

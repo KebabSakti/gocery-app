@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ayov2/const/message_const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/helper/helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,9 +37,8 @@ class OtpPageController extends GetxController {
           //
         },
       );
-    } on Failure catch (e) {
-      _helper.dialog.close();
-      _helper.toast.show(e.message);
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 
@@ -56,9 +56,8 @@ class OtpPageController extends GetxController {
 
         Get.back(closeOverlays: true, result: userCredential);
       }
-    } on Failure catch (e) {
-      _helper.dialog.close();
-      _helper.toast.show(e.message);
+    } catch (e) {
+      ErrorHandler(e).toast(GENERAL_MESSAGE);
     }
   }
 

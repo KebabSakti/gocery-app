@@ -33,10 +33,14 @@ class AppPageController extends GetxController {
     AccountPage(),
   ];
 
-  void _cartData() {
-    _cart.cart().then((result) {
-      cartController.cartItems.assignAll(result);
-    });
+  void _cartData() async {
+    try {
+      List<CartItemModel> cartItems = await _cart.cart();
+
+      cartController.cartItems.assignAll(cartItems);
+    } catch (e) {
+      ErrorHandler(e).redirect(_cartData);
+    }
   }
 
   void navigateTo(int index) {
