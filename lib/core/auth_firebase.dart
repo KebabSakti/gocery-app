@@ -12,6 +12,8 @@ class AuthFirebase {
     final LoginResult result = await FacebookAuth.instance
         .login(loginBehavior: LoginBehavior.WEB_ONLY);
 
+    if (result.accessToken == null) return null;
+
     return FacebookAuthProvider.credential(result.accessToken.token);
   }
 

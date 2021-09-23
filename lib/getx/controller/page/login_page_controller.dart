@@ -18,22 +18,23 @@ class LoginPageController extends GetxController {
 
   void facebookSignIn() async {
     try {
-      _helper.dialog.loading();
+      OAuthCredential facebookCredential =
+          await _authFirebase.facebookCredential();
 
-      await _socialSignIn(await _authFirebase.facebookCredential());
+      if (facebookCredential != null) await _socialSignIn(facebookCredential);
     } catch (e) {
       print(e.toString());
 
       _helper.dialog.close();
-      _helper.toast.show(GENERAL_MESSAGE);
+      _helper.toast.show(e.toString());
     }
   }
 
   void googleSignIn() async {
     try {
-      _helper.dialog.loading();
+      OAuthCredential googleCredential = await _authFirebase.googleCredential();
 
-      await _socialSignIn(await _authFirebase.googleCredential());
+      if (googleCredential != null) _socialSignIn(googleCredential);
     } catch (e) {
       print(e.toString());
 
@@ -45,6 +46,8 @@ class LoginPageController extends GetxController {
   Future _socialSignIn(OAuthCredential credential) async {
     try {
       if (credential != null) {
+        _helper.dialog.loading();
+
         UserCredential userCredential =
             await _authFirebase.signInWithCredential(credential);
 

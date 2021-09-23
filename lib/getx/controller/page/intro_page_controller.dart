@@ -40,8 +40,11 @@ class IntroPageController extends GetxController {
         _routeToAppPage();
       }).catchError((k, v) => throw Failure(k.toString()));
     } on Failure catch (e) {
+      print(e.message);
+
       _helper.dialog.close();
-      _helper.toast.show(e.message);
+
+      _routeToOnboardingPage();
     }
   }
 
