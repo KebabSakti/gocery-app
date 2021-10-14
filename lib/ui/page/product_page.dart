@@ -93,14 +93,15 @@ class ProductPage extends GetWidget<ProductPageController> {
                     header: Material(
                       color: Get.theme.backgroundColor,
                       child: SizedBox(
-                          height: 50,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: ProductFilter(
-                              productFilterModel: controller.filterModel,
-                              onFilterTap: controller.routeToFilterPage,
-                            ),
-                          )),
+                        height: 50,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: ProductFilter(
+                            productFilterModel: controller.filterModel,
+                            onFilterTap: controller.routeToFilterPage,
+                          ),
+                        ),
+                      ),
                     ),
                     sliver: SliverToBoxAdapter(
                       child: Padding(

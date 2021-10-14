@@ -5,4 +5,5 @@ class GlobalObs {
   final Rx<FcmModel> fcmModel = FcmModel().obs;
   final Rx<AuthStateModel> authState = AuthStateModel().obs;
   final RxList<CategoryModel> categoryModel = List<CategoryModel>().obs;
+  final RxList<VoucherModel> vouchersApplied = List<VoucherModel>().obs;
 }

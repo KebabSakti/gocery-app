@@ -19,3 +19,8 @@ export './map_page_controller.dart';
 export './error_page.dart';
 export './account_page_controller.dart';
 export './phone_login_page_controller.dart';
+export './order_complete_page_controller.dart';
+export './order_page_controller.dart';
+export './order_detail_page_controller.dart';
+export './chat_page_controller.dart';
+export './tracking_page_controller.dart';

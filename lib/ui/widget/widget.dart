@@ -45,3 +45,5 @@ export './product_detail_desc_section.dart';
 export './product_detail_related_section.dart';
 export './scroll_top_button_child.dart';
 export './shopping_cart_icon.dart';
+export './home_qr_point_section.dart';
+export './home_highlight_section.dart';

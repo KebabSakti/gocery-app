@@ -27,7 +27,7 @@ class OrderSummaryPage extends GetView<OrderSummaryPageController> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: controller.navigateToMapPage,
+                  onTap: controller.routeToMapPage,
                   child: Text(
                     'Edit',
                     style: TextStyle(
@@ -41,7 +41,7 @@ class OrderSummaryPage extends GetView<OrderSummaryPageController> {
             SizedBox(height: 15),
             (false)
                 ? Text(
-                    'Alamat pengiriman belum di set',
+                    'Alamat pengiriman belum di tambahkan',
                     style: TextStyle(color: Colors.grey[600]),
                   )
                 : Row(
@@ -781,78 +781,84 @@ class OrderSummaryPage extends GetView<OrderSummaryPageController> {
       SizedBox(height: 70),
     ];
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Konfirmasi Pesanan',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-      body: RefreshIndicator(
-        onRefresh: () async {},
-        child: ListView.builder(
-          itemCount: _widgets.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _widgets[index];
-          },
-        ),
-      ),
-      bottomSheet: Container(
-        padding: EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(
-              width: 1,
-              color: Colors.grey[200],
+    return WillPopScope(
+      onWillPop: () async {
+        controller.back();
+
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Konfirmasi Pesanan',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Total Bayar',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  Utility().currency('100000'),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.redAccent,
-                  ),
-                ),
-              ],
-            ),
-            FlatButton(
-              onPressed: () {},
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              color: Get.theme.primaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                'Buat Pesanan',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
+        body: RefreshIndicator(
+          onRefresh: () async {},
+          child: ListView.builder(
+            itemCount: _widgets.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _widgets[index];
+            },
+          ),
+        ),
+        bottomSheet: Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(
+                width: 1,
+                color: Colors.grey[200],
               ),
             ),
-          ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Total Bayar',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    Utility().currency('100000'),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: Get.theme.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
+              FlatButton(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                color: Get.theme.primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Text(
+                  'Buat Pesanan',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: controller.orderComplete,
+              ),
+            ],
+          ),
         ),
       ),
     );

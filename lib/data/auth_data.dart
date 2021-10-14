@@ -12,12 +12,14 @@ class AuthData {
     @required String customerPhone,
     @required String customerEmail,
     @required String customerFcm,
+    @required String idToken,
   }) async {
     var response = await _authRepo.register(
       customerName: customerName,
       customerPhone: customerPhone,
       customerEmail: customerEmail,
       customerFcm: customerFcm,
+      idToken: idToken,
     );
 
     var parsedData = await jsonDecode(response.data);
@@ -32,12 +34,14 @@ class AuthData {
     @required String customerEmail,
     @required String customerFcm,
     @required String authType,
+    @required String idToken,
   }) async {
     var response = await _authRepo.social(
       customerName: customerName,
       customerEmail: customerEmail,
       customerFcm: customerFcm,
       authType: authType,
+      idToken: idToken,
     );
 
     var parsedData = await jsonDecode(response.data);
@@ -51,11 +55,13 @@ class AuthData {
     String customerId,
     String customerPhone,
     String customerFcm,
+    String idToken,
   }) async {
     var response = await _authRepo.authenticate(
       customerId: customerId,
       customerPhone: customerPhone,
       customerFcm: customerFcm,
+      idToken: idToken,
     );
 
     var parsedData = await jsonDecode(response.data);

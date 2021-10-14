@@ -19,12 +19,12 @@ class CategoryItem extends StatelessWidget {
         InkWell(
           borderRadius: BorderRadius.circular(25),
           child: Ink(
-            width: (Get.size.width - 50) / 4,
-            height: (Get.size.width - 50) / 4,
+            width: (Get.size.width - 80) / 4,
+            height: (Get.size.width - 80) / 4,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: Get.theme.colorScheme.background,
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: icon,
           ),

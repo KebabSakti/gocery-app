@@ -24,14 +24,14 @@ class HomeCategorySectionNew extends StatelessWidget {
             if (home.state == States.loading) {
               return Wrap(
                 runSpacing: 20,
-                spacing: 10,
+                spacing: 20,
                 children: List<Widget>.generate(
                   8,
                   (index) => Column(
                     children: [
                       ShimmerLoader(
-                        width: (Get.size.width - 50) / 4,
-                        height: (Get.size.width - 50) / 4,
+                        width: (Get.size.width - 80) / 4,
+                        height: (Get.size.width - 80) / 4,
                         radius: 25,
                       ),
                       SizedBox(height: 6),
@@ -50,7 +50,7 @@ class HomeCategorySectionNew extends StatelessWidget {
               List<CategoryModel> categories = home.data.categoryModel;
 
               return Wrap(
-                spacing: 10,
+                spacing: 20,
                 runSpacing: 20,
                 children: categories
                     .asMap()

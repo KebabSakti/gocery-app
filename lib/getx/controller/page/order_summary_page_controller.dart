@@ -3,6 +3,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_webservice/geocoding.dart' as google;
+import 'package:permission_handler/permission_handler.dart';
 
 class OrderSummaryPageController extends GetxController {
   Future<List<Placemark>> _getAddressFromLocation(
@@ -67,12 +68,24 @@ class OrderSummaryPageController extends GetxController {
     print(_geocodingResponse.results[0].formattedAddress);
   }
 
-  void navigateToDeliveryDetailPage() {
-    Get.toNamed(DELIVERY_DETAIL_PAGE);
+  void routeToDeliveryDetailPage() async {
+    await Permission.location.request();
+
+    if (await Permission.location.isGranted) Get.toNamed(DELIVERY_DETAIL_PAGE);
   }
 
-  void navigateToMapPage() {
-    Get.toNamed(MAP_PAGE);
+  void routeToMapPage() async {
+    await Permission.location.request();
+
+    if (await Permission.location.isGranted) Get.toNamed(MAP_PAGE);
+  }
+
+  void orderComplete() {
+    Get.offNamed(ORDER_COMPLETE_PAGE);
+  }
+
+  void back() {
+    Get.offNamed(CART_PAGE);
   }
 
   void _init() {

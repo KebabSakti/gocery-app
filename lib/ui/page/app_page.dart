@@ -1,4 +1,3 @@
-import 'package:ayov2/const/ayo_icons.dart';
 import 'package:ayov2/getx/getx.dart';
 import 'package:ayov2/model/model.dart';
 import 'package:ayov2/ui/ui.dart';
@@ -32,55 +31,59 @@ class AppPage extends GetView<AppPageController> {
                 ),
               ),
               Obx(() {
-                return BottomNavigationBar(
-                  backgroundColor: Colors.white,
-                  showUnselectedLabels: true,
-                  type: BottomNavigationBarType.fixed,
-                  selectedItemColor: Get.theme.primaryColor,
-                  // selectedFontSize: 10,
-                  // unselectedFontSize: 10,
-                  selectedIconTheme: IconThemeData(size: 22),
-                  unselectedIconTheme: IconThemeData(size: 20),
-                  selectedLabelStyle: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10,
-                  ),
-                  unselectedLabelStyle: TextStyle(fontSize: 10),
-                  currentIndex: controller.activePage.value,
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(Ayo.house),
-                      label: 'Beranda',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: IconWithDot(
-                        Icon(Ayo.notes),
-                        value: 1,
+                return Stack(
+                  children: [
+                    BottomNavigationBar(
+                      backgroundColor: Colors.white,
+                      showUnselectedLabels: true,
+                      type: BottomNavigationBarType.fixed,
+                      selectedItemColor: Get.theme.primaryColor,
+                      // selectedFontSize: 10,
+                      // unselectedFontSize: 10,
+                      selectedIconTheme: IconThemeData(size: 26),
+                      unselectedIconTheme: IconThemeData(size: 26),
+                      selectedLabelStyle: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
                       ),
-                      label: 'Pesanan',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: IconWithDot(
-                        Icon(Ayo.slack),
-                        value: 4,
-                      ),
-                      label: 'Voucher',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: IconWithDot(
-                        Icon(Ayo.reminders),
-                        value: 10,
-                      ),
-                      label: 'Notifikasi',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: IconWithDot(
-                        Icon(Ayo.settings),
-                      ),
-                      label: 'Akun',
+                      unselectedLabelStyle: TextStyle(fontSize: 10),
+                      currentIndex: controller.activePage.value,
+                      items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home_rounded),
+                          label: 'Beranda',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: IconWithDot(
+                            Icon(Icons.list_alt_rounded),
+                            value: 1,
+                          ),
+                          label: 'Orderan',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: IconWithDot(
+                            Icon(Icons.receipt_long_rounded),
+                            value: 2,
+                          ),
+                          label: 'Voucher',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: IconWithDot(
+                            Icon(Icons.chat_rounded),
+                            value: 10,
+                          ),
+                          label: 'Pesan',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: IconWithDot(
+                            Icon(Icons.account_circle_rounded),
+                          ),
+                          label: 'Akun',
+                        ),
+                      ],
+                      onTap: controller.navigateTo,
                     ),
                   ],
-                  onTap: controller.navigateTo,
                 );
               }),
             ],

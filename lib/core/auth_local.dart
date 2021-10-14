@@ -14,12 +14,14 @@ class AuthLocal {
     @required String customerPhone,
     @required String customerEmail,
     @required String customerFcm,
+    @required String idToken,
   }) async {
     return await _authData.register(
       customerName: customerName,
       customerPhone: customerPhone,
       customerEmail: customerEmail,
       customerFcm: customerFcm,
+      idToken: idToken,
     );
   }
 
@@ -28,12 +30,14 @@ class AuthLocal {
     @required String customerEmail,
     @required String customerFcm,
     @required String authType,
+    @required String idToken,
   }) async {
     return await _authData.social(
       customerName: customerName,
       customerEmail: customerEmail,
       customerFcm: customerFcm,
       authType: authType,
+      idToken: idToken,
     );
   }
 
@@ -41,11 +45,13 @@ class AuthLocal {
     String customerId,
     String customerPhone,
     String customerFcm,
+    String idToken,
   }) async {
     return await _authData.authenticate(
       customerId: customerId,
       customerPhone: customerPhone,
       customerFcm: customerFcm,
+      idToken: idToken,
     );
   }
 

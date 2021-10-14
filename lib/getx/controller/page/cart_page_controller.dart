@@ -34,7 +34,7 @@ class CartPageController extends GetxController {
   }
 
   void routeToOrderSummaryPage() {
-    Get.toNamed(ORDER_SUMMARY_PAGE);
+    Get.offNamed(ORDER_SUMMARY_PAGE);
   }
 
   @override

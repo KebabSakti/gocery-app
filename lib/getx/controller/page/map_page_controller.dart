@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:ayov2/const/const.dart';
 import 'package:ayov2/core/core.dart';
+import 'package:ayov2/helper/helper.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -11,18 +13,23 @@ class MapPageController extends GetxController {
   GoogleMapController _mapController;
   CameraPosition _cameraPosition;
 
+  final Helper helper = Get.find();
+
   final PlacesCore _placesCore = PlacesCore();
   final PanelController panelController = PanelController();
   final Completer<GoogleMapController> _completer = Completer();
 
-  final RxBool loading = false.obs;
+  final RxBool loading = true.obs;
   final RxString address = ''.obs;
 
   LatLng _myLocation =
       LatLng(-0.49732531314209866, 117.14187383609166); //Samarinda
 
   void onCameraMoveStarted() {
-    loading(true);
+    if (!loading()) {
+      loading(true);
+      panelController.close();
+    }
   }
 
   void onCameraMove(CameraPosition cameraPosition) {
@@ -39,7 +46,11 @@ class MapPageController extends GetxController {
             .addressFromLocationOffline(_latitude, _longitude)
             .then((results) {
           address(_formatPlaceMarks(results));
-          loading(false);
+
+          if (loading()) {
+            loading(false);
+            panelController.open();
+          }
         });
       } catch (e) {
         print(e);
@@ -103,5 +114,19 @@ class MapPageController extends GetxController {
         placemarks[0].country;
 
     return _formattedAddress;
+  }
+
+  void routeToSearchAddressPage() {
+    Get.toNamed(DELIVERY_DETAIL_PAGE);
+  }
+
+  void complete() {
+    Get.back(result: '');
+  }
+
+  @override
+  void onClose() {
+    _mapController.dispose();
+    super.onClose();
   }
 }

@@ -12,6 +12,7 @@ class ProductPageController extends GetxController {
   final GlobalObs globalObs = Get.find();
 
   final Rx<ProductFilterModel> filterModel = ProductFilterModel().obs;
+
   final Rx<StateModel<ProductPaginateModel>> pageState =
       StateModel<ProductPaginateModel>(
     state: States.loading,

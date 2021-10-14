@@ -20,9 +20,9 @@ class Network {
 
   Network() {
     BaseOptions options = BaseOptions(
-      baseUrl: '$PROTOCOL://$URL:1001/api/',
-      connectTimeout: 7000,
-      receiveTimeout: 7000,
+      baseUrl: '$PROTOCOL://$BASE_URL/api/',
+      connectTimeout: 60000,
+      receiveTimeout: 60000,
       responseType: ResponseType.plain,
       headers: {
         "Accept": "application/json",
@@ -42,7 +42,7 @@ class Network {
       (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (HttpClient client) {
         client.findProxy = (uri) {
-          return "PROXY $URL:8000";
+          return "PROXY $PROXY_URL";
         };
         client.badCertificateCallback =
             (X509Certificate cert, String host, int port) => true;

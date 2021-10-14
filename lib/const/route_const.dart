@@ -19,3 +19,7 @@ const String DELIVERY_DETAIL_PAGE = '/delivery_detail';
 const String MAP_PAGE = '/map';
 const String ERROR_PAGE = '/error_page';
 const String ORDER_PAGE = '/order';
+const String ORDER_COMPLETE_PAGE = '/order_complete';
+const String ORDER_DETAIL_PAGE = '/order_detail';
+const String CHAT_PAGE = '/chat';
+const String TRACKING_PAGE = '/tracking';

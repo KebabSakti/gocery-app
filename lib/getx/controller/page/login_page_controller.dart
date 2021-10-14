@@ -50,6 +50,7 @@ class LoginPageController extends GetxController {
               userCredential.user.providerData[0].email,
           authType: userCredential.additionalUserInfo.providerId,
           customerFcm: await _fcm.token(),
+          idToken: await userCredential.user.getIdToken(),
         );
 
         await _appPreference.customer(data: customerModel);

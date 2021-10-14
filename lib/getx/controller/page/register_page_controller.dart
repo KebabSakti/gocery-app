@@ -43,12 +43,13 @@ class RegisterPageController extends GetxController {
           var userCredential = await _routeToOtpPage(
               verificationId, resendToken, phoneNumber.toString());
 
-          if (userCredential != null) _register();
+          if (userCredential != null) _register(userCredential);
         },
         verificationCompleted: (PhoneAuthCredential credential) async {
-          await _authFirebase.signInWithCredential(credential);
+          UserCredential userCredential =
+              await _authFirebase.signInWithCredential(credential);
 
-          _register();
+          _register(userCredential);
         },
       );
     } on Failure catch (e) {
@@ -69,13 +70,14 @@ class RegisterPageController extends GetxController {
     if (formKey.currentState.validate()) _phoneSignIn();
   }
 
-  void _register() async {
+  void _register(UserCredential userCredential) async {
     try {
       CustomerModel customerModel = await _authLocal.register(
         customerName: nameField.text,
         customerEmail: emailField.text,
         customerPhone: '+62${phoneField.text}',
         customerFcm: await _fcm.token(),
+        idToken: await userCredential.user.getIdToken(),
       );
 
       await _appPreference.customer(data: customerModel);

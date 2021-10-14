@@ -18,3 +18,7 @@ export './delivery_detail_page.dart';
 export './map_page.dart';
 export './order_page.dart';
 export './phone_login_page.dart';
+export './order_complete_page.dart';
+export './order_detail_page.dart';
+export './chat_page.dart';
+export './tracking_page.dart';

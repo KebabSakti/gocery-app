@@ -34,7 +34,7 @@ class BundleItem extends StatelessWidget {
         ),
         Material(
           child: Ink(
-            height: 300,
+            height: 315,
             padding: EdgeInsets.all(15),
             decoration: BoxDecoration(
               image: DecorationImage(

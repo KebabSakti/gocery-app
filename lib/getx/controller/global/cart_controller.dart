@@ -82,7 +82,7 @@ class CartController extends GetxController {
 
     if (_sayur == true) _message += ' Pakai kurir sayur kantor';
 
-    print('DEBUGG : $_message');
+    print('\x1B[32m$_message\x1B[0m');
   }
 
   void _init() {

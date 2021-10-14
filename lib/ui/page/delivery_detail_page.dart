@@ -19,7 +19,7 @@ class DeliveryDetailPage extends GetView<DeliveryDetailPageController> {
               Icons.map_outlined,
               color: Colors.grey[800],
             ),
-            onPressed: () {},
+            onPressed: controller.routeToMapPage,
           )
         ],
         bottom: PreferredSize(

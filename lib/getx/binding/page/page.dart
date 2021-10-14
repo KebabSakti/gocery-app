@@ -17,3 +17,8 @@ export './order_summary_page_binding.dart';
 export './delivery_detail_page_binding.dart';
 export './map_page_binding.dart';
 export './phone_login_page_binding.dart';
+export './order_complete_page_binding.dart';
+export './order_page_binding.dart';
+export './order_detail_page_binding.dart';
+export './chat_page_binding.dart';
+export './tracking_page_binding.dart';

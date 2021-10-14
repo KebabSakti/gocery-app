@@ -32,12 +32,12 @@ class HomePopularProductSection extends StatelessWidget {
                 return SizedBox(
                   height: 280,
                   child: ListView.builder(
-                    itemCount: 2,
+                    itemCount: 3,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.only(
-                          right: (index >= 0 && index != 1) ? 10 : 0,
+                          right: (index >= 0 && index != 2) ? 10 : 0,
                         ),
                         child: ShimmerLoader(
                           radius: 15,

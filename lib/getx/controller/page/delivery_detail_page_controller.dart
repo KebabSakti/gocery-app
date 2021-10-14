@@ -1,3 +1,4 @@
+import 'package:ayov2/const/route_const.dart';
 import 'package:ayov2/core/core.dart';
 import 'package:ayov2/data/data.dart';
 import 'package:ayov2/model/model.dart';
@@ -54,6 +55,10 @@ class DeliveryDetailPageController extends GetxController {
 
   String placeName(String value) {
     return value.substring(0, value.indexOf(','));
+  }
+
+  routeToMapPage() {
+    Get.toNamed(MAP_PAGE);
   }
 
   void _init() {

@@ -21,8 +21,8 @@ class SectionHeading extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              // fontSize: 16,
             ),
           ),
         ),

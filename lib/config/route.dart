@@ -105,5 +105,25 @@ class AppRoute {
       name: ORDER_PAGE,
       page: () => OrderPage(),
     ),
+    GetPage(
+      name: ORDER_COMPLETE_PAGE,
+      binding: OrderCompletePageBinding(),
+      page: () => OrderCompletePage(),
+    ),
+    GetPage(
+      name: ORDER_DETAIL_PAGE,
+      binding: OrderDetailPageBinding(),
+      page: () => OrderDetailPage(),
+    ),
+    GetPage(
+      name: CHAT_PAGE,
+      binding: ChatPageBinding(),
+      page: () => ChatPage(),
+    ),
+    GetPage(
+      name: TRACKING_PAGE,
+      binding: TrackingPageBinding(),
+      page: () => TrackingPage(),
+    ),
   ];
 }

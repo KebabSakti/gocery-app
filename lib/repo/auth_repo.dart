@@ -11,6 +11,7 @@ class AuthRepo {
     @required String customerPhone,
     @required String customerEmail,
     @required String customerFcm,
+    @required String idToken,
   }) async {
     var response = await _network.action(
       Methods.POST,
@@ -20,6 +21,7 @@ class AuthRepo {
         'customer_phone': customerPhone,
         'customer_email': customerEmail,
         'customer_fcm': customerFcm,
+        'id_token': idToken,
       },
     );
 
@@ -31,6 +33,7 @@ class AuthRepo {
     @required String customerEmail,
     @required String customerFcm,
     @required String authType,
+    @required String idToken,
   }) async {
     var response = await _network.action(
       Methods.POST,
@@ -40,6 +43,7 @@ class AuthRepo {
         'customer_email': customerEmail,
         'customer_fcm': customerFcm,
         'auth_type': authType,
+        'id_token': idToken,
       },
     );
 
@@ -50,6 +54,7 @@ class AuthRepo {
     String customerId,
     String customerPhone,
     String customerFcm,
+    String idToken,
   }) async {
     var response = await _network.action(
       Methods.POST,
@@ -58,6 +63,7 @@ class AuthRepo {
         'customer_id': customerId,
         'customer_phone': customerPhone,
         'customer_fcm': customerFcm,
+        'id_token': idToken,
       },
     );
 
